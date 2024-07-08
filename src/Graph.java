@@ -21,8 +21,9 @@ public class Graph {
             throw new IllegalArgumentException("Both nodes must exist in the graph.");
         }
 
+        // iki yön için de kenar ekliyorum
         fromNode.addEdge(new Edge(toNode, weight));
-        toNode.addEdge(new Edge(fromNode, weight));  // Add edge in both directions
+        toNode.addEdge(new Edge(fromNode, weight));  
     }
 
     public Node getNode(String name) {
