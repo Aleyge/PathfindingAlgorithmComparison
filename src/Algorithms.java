@@ -97,8 +97,19 @@ public class Algorithms {
     }
 
     private static double heuristic(Node a, Node b) {
-        // Example heuristic: Euclidean distance (assuming nodes have x, y coordinates)
-        // Here, we just use 0 as a placeholder, assuming the graph is unweighted for simplicity
-        return 0;
+        // Manhattan distance for floor-to-floor navigation
+        int dx = Math.abs(a.getX() - b.getX());
+        int dy = Math.abs(a.getY() - b.getY());
+        int dz = Math.abs(a.getFloor() - b.getFloor());
+        
+        // If nodes are on different floors, consider portal nodes
+        if (dz > 0) {
+            // Here, we need to find the closest portal nodes and calculate heuristic accordingly.
+            // This is just a simple heuristic example; you can make it more complex if needed.
+            return Math.sqrt(dx * dx + dy * dy) + (dz * 10); // Assume portal transition cost
+        }
+
+        // Euclidean distance for same floor nodes
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }

@@ -7,8 +7,8 @@ public class Graph {
         nodes = new HashMap<>();
     }
 
-    public Node addNode(String name) {
-        Node node = new Node(name);
+    public Node addNode(String name, int x, int y, int floor, boolean isPortal) {
+        Node node = new Node(name, x, y, floor, isPortal);
         nodes.put(name, node);
         return node;
     }
@@ -21,7 +21,7 @@ public class Graph {
             throw new IllegalArgumentException("Both nodes must exist in the graph.");
         }
 
-        // iki yön için de kenar ekliyorum
+        // İki yön için de kenar ekliyorum
         fromNode.addEdge(new Edge(toNode, weight));
         toNode.addEdge(new Edge(fromNode, weight));  
     }
