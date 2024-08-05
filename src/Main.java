@@ -1,65 +1,38 @@
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         Graph graph = new Graph();
+        Algorithm algorithm = new Algorithm();
 
-        // Node'ları ekliyoruz (isim, x, y, floor, isPortal)
-        graph.addNode("A", 0, 0, 0, false);
-        graph.addNode("B", 10, 0, 0, false);
-        graph.addNode("C", 5, 5, 0, false);
-        graph.addNode("D", 10, 10, 0, false);
-        graph.addNode("E", 15, 15, 0, false);
-        graph.addNode("F", 20, 10, 1, true); // portal node
-        graph.addNode("G", 25, 0, 1, false);
+        // Örnek kenarları ekleyin
+        graph.addEdge(25, 30, 12, 29); // Kenar 1
+        graph.addEdge(12, 29, 13, 35); // Kenar 2
+        graph.addEdge(13, 35, 15, 25); // Kenar 3 (Alternatif yol)
+        graph.addEdge(25, 30, 15, 25); // Kenar 4 (Alternatif yol)
+        graph.addEdge(15, 25, 10, 20); // Kenar 5 (Alternatif yol)
 
-        // Ağırlıklı kenarları ekliyoruz
-        graph.addEdge("A", "B", 4);
-        graph.addEdge("A", "C", 1);
-        graph.addEdge("B", "D", 3);
-        graph.addEdge("B", "E", 8);
-        graph.addEdge("C", "D", 2);
-        graph.addEdge("C", "F", 6);
-        graph.addEdge("D", "E", 4);
-        graph.addEdge("F", "G", 8);
+        // Düğümleri ekleyin
+        graph.addNode("Gucci", 15, 25);
+        graph.addNode("LC Waikiki", 13, 35);
+        graph.addNode("Center", 12, 29);
+        graph.addNode("Start", 25, 30);
+        graph.addNode("End", 10, 20);
+        graph.addNode("Zara", 17, 25);
+        // Testler: Farklı yolların en kısa mesafelerini bulma
+        System.out.println("Test 1: Start'tan LC Waikiki'ye");
+        algorithm.findShortestPath(graph, "Start", "LC Waikiki");
 
-        // Node'ları ve kenarları yazdırmak için
-        for (Node node : graph.getNodes()) {
-            System.out.println("Node " + node.getName() + " has edges:");
-            for (Edge edge : node.getEdges()) {
-                System.out.println("  " + edge);
-            }
-        }
+        System.out.println("\nTest 2: Start'tan Gucci'ye");
+        algorithm.findShortestPath(graph, "Start", "Gucci");
 
-        List<Node> dijkstraPath = Algorithms.dijkstra(graph, graph.getNode("A"), graph.getNode("G"));
-        System.out.println("Dijkstra's algorithm path: " + pathToString(dijkstraPath));
-        System.out.println("Dijkstra's algorithm path length: " + calculatePathLength(dijkstraPath));
+        System.out.println("\nTest 3: Gucci'den End'e");
+        algorithm.findShortestPath(graph, "Gucci", "End");
 
-        List<Node> aStarPath = Algorithms.aStar(graph, graph.getNode("A"), graph.getNode("G"));
-        System.out.println("A* algorithm path: " + pathToString(aStarPath));
-        System.out.println("A* algorithm path length: " + calculatePathLength(aStarPath));
-    }
-
-    private static String pathToString(List<Node> path) {
-        StringBuilder sb = new StringBuilder();
-        for (Node node : path) {
-            sb.append(node.getName()).append(" ");
-        }
-        return sb.toString().trim();
-    }
-
-    private static double calculatePathLength(List<Node> path) {
-        double totalLength = 0.0;
-        for (int i = 0; i < path.size() - 1; i++) {
-            Node currentNode = path.get(i);
-            Node nextNode = path.get(i + 1);
-            for (Edge edge : currentNode.getEdges()) {
-                if (edge.getTarget().equals(nextNode)) {
-                    totalLength += edge.getWeight();
-                    break;
-                }
-            }
-        }
-        return totalLength;
+        System.out.println("\nTest 4: LC Waikiki'den End'e");
+        algorithm.findShortestPath(graph, "LC Waikiki", "End");
+        
+        System.out.println("\nTest 4: LC Waikiki'den Zara'ya");
+        algorithm.findShortestPath(graph, "LC Waikiki", "Zara");
     }
 }
+
+

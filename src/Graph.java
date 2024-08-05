@@ -1,36 +1,52 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Graph {
-    private Map<String, Node> nodes;
+    private final List<Edge> edges = new ArrayList<>(); // Tüm kenarların listesi
+    private final Map<String, Node> nodes = new HashMap<>(); // Düğümler için bir harita
 
-    public Graph() {
-        nodes = new HashMap<>();
+    // Yeni bir kenar ekler
+    public void addEdge(int startX, int startY, int endX, int endY) {
+        Edge edge = new Edge(startX, startY, endX, endY);
+        edges.add(edge);
+        edges.add(new Edge(endX, endY, startX, startY)); // İki yönlü ekle
     }
 
-    public Node addNode(String name, int x, int y, int floor, boolean isPortal) {
-        Node node = new Node(name, x, y, floor, isPortal);
-        nodes.put(name, node);
-        return node;
+    // Tüm kenarları döndürür
+    public List<Edge> getEdges() {
+        return edges;
     }
 
-    public void addEdge(String from, String to, double weight) {
-        Node fromNode = nodes.get(from);
-        Node toNode = nodes.get(to);
-
-        if (fromNode == null || toNode == null) {
-            throw new IllegalArgumentException("Both nodes must exist in the graph.");
-        }
-
-        // İki yön için de kenar ekliyorum
-        fromNode.addEdge(new Edge(toNode, weight));
-        toNode.addEdge(new Edge(fromNode, weight));  
+    // Düğümleri ekler
+    public void addNode(String name, int x, int y) {
+        nodes.put(name, new Node(name, x, y));
     }
 
+    // İsimle düğümü alır
     public Node getNode(String name) {
         return nodes.get(name);
     }
 
-    public Collection<Node> getNodes() {
-        return nodes.values();
+    // Verilen koordinatlarla bağlı kenarları döndürür
+    public List<Edge> getConnectedEdges(int x, int y) {
+        List<Edge> connected = new ArrayList<>();
+        for (Edge edge : edges) {
+            if ((edge.startX == x && edge.startY == y) || (edge.endX == x && edge.endY == y)) {
+                connected.add(edge);
+            }
+        }
+        return connected;
+    }
+
+    // Koordinatlarla düğüm alır
+    public Node getNodeByCoordinates(int x, int y) {
+        for (Node node : nodes.values()) {
+            if (node.x == x && node.y == y) {
+                return node;
+            }
+        }
+        return null;
     }
 }

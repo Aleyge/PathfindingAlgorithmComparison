@@ -1,22 +1,31 @@
 public class Edge {
-    private Node target;
-    private double weight;
+    public final int startX; // Başlangıç x koordinatı
+    public final int startY; // Başlangıç y koordinatı
+    public final int endX;   // Bitiş x koordinatı
+    public final int endY;   // Bitiş y koordinatı
+    public final double distance; // İki nokta arasındaki mesafe
 
-    public Edge(Node target, double weight) {
-        this.target = target;
-        this.weight = weight;
+    // Constructor: Kenarın başlangıç ve bitiş koordinatlarını alır
+    public Edge(int startX, int startY, int endX, int endY) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.distance = calculateDistance(); // Mesafeyi hesapla
     }
 
-    public Node getTarget() {
-        return target;
+    // İki nokta arasındaki Euclidean mesafesini hesaplar
+    private double calculateDistance() {
+        return Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
     }
 
-    public double getWeight() {
-        return weight;
-    }
-
-    @Override
-    public String toString() {
-        return "Edge to " + target.getName() + " with weight " + weight;
+    // Kenarın diğer uç noktasını alır
+    public int[] getOtherCoordinates(int x, int y) {
+        if (x == startX && y == startY) {
+            return new int[]{endX, endY};
+        } else if (x == endX && y == endY) {
+            return new int[]{startX, startY};
+        }
+        return null;
     }
 }
